@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lucy IoT Monitoring Assistant - dashboard Selection</title>
+
+  <!-- Google Font (Material-inspired) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+
+  <style>
+    /* Material Design-Inspired Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+    }
+    
+    /* Top App Bar */
+    header {
+        background: #005AAB;
+        color: #ffffff;
+        padding: 1rem;
+        text-align: center;
+        font-size: 1.25rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+    .logo {
+      height: 40px;
+      margin-right: 1rem;
+    }
+
+    .app-title {
+      font-size: 1.5rem;
+      font-weight: 400;
+    }
+
+    /* Main Content Container */
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #01579b;
+    }
+
+    p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    /* Search box */
+    .search-box {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+      transition: border 0.3s ease;
+    }
+
+    .search-box input:focus {
+      border-color: #0288d1;
+    }
+
+    /* dashboard List */
+    .dashboard-list {
+      list-style: none;
+    }
+
+    .dashboard-item {
+      background-color: #fafafa;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      transition: background-color 0.2s ease;
+    }
+
+    /* Make dashboard list scrollable */
+.dashboard-list {
+  max-height: 300px; /* Adjust height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border: 1px solid #ddd; /* Optional: Add border for visibility */
+  padding: 0.5rem;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+
+    .dashboard-item a {
+      display: block;
+      padding: 0.75rem 1rem;
+      color: #333;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .dashboard-item a:hover {
+      background-color: #eceff1; /* Light grey hover */
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: #777;
+      font-size: 0.9rem;
+    }
+    /* Reduce image size in header */
+.header-logo {
+  width: 100px;  /* Adjust as needed */
+  height: auto;  /* Maintain aspect ratio */
+  margin-bottom: 0; /* Remove extra margin */
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Top App Bar -->
+  <header>
+
+    <div class="app-title">UNDP Smart Facilities - Lucy IoT Monitoring Assistant</div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <h1>Welcome to the Lucy IoT Monitoring Assistant</h1>
+    <p>
+      Lucy is your intelligent IoT monitoring assistant, designed to provide real-time 
+      insights into IoT infrastructure and smart facilities across various sites.
+      To get started, please select a site below.
+    </p>
+
+    <!-- Search Box -->
+    <div class="search-box">
+      <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Search for a site..." 
+        oninput="filterDashboards()"
+      />
+    </div>
+
+    <!-- Dashboard List -->
+    <ul class="dashboard-list" id="dashboardList">
+      {% for dashboard in dashboards %}
+      <li class="dashboard-item" data-dashboard="{{ dashboard.title }}">
+        <a href="{{ url_for('home', dashboard_id=dashboard.id) }}">
+          {{ dashboard.title }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+
+  </div>
+
+  <footer>
+    &copy; {{ year or "2025" }} UNDP Smart Facilities - Lucy IoT Monitoring Assistant
+  </footer>
+
+  <script>
+    function filterDashboards() {
+      const searchValue = document.getElementById('searchInput').value.toLowerCase();
+      const items = document.querySelectorAll('.dashboard-item');
+
+      items.forEach(item => {
+        const dashboardName = item.getAttribute('data-dashboard').toLowerCase();
+        if (!dashboardName.includes(searchValue)) {
+          item.style.display = 'none';
+        } else {
+          item.style.display = 'block';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
